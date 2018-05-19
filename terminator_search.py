@@ -2,7 +2,9 @@
 from terminatorlib import plugin, config
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk, Gdk
+from gi.repository.Gtk import Clipboard
+from gi.repository.Gtk import MenuItem
+from gi.repository.Gdk import SELECTION_PRIMARY
 from subprocess import call
 
 AVAILABLE = ['TerminatorSearch']
@@ -17,7 +19,7 @@ class TerminatorSearch(plugin.MenuItem):
 
   def callback(self, menuitems, menu, terminal):
     # retrive the context of clipboard
-    self.clipboard = Gtk.Clipboard.get(Gdk.SELECTION_PRIMARY)
+    self.clipboard = Clipboard.get(SELECTION_PRIMARY)
     self.content = self.clipboard.wait_for_text()
 
     # extract 5 character of the clipboard
@@ -29,7 +31,7 @@ class TerminatorSearch(plugin.MenuItem):
 
   def add_submenu(self, submenu, name, terminal):
     # create menu item
-    menu = Gtk.MenuItem(name)
+    menu = MenuItem(name)
 
     # call on_click method while Clicking on menu item
     menu.connect("activate", self.on_click, terminal)
